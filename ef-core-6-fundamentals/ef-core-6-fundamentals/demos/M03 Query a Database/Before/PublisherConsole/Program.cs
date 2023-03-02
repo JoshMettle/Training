@@ -6,21 +6,54 @@ using System.Linq;
 
  PubContext _context = new PubContext();
 
-//GetAuthors();
-/*
-void GetAuthors()
-{
-    var authors = context.Authors.ToList();
-    foreach (var author in authors)
-    {
-        Console.WriteLine(author.FirstName + " " + author.LastName);
-    }
-}
-*/
-QueryFilters();
+//QueryFilters();
+//FindIt();
+AddSomeMoreAuthors();
+//SkipAndTakeAuthors();
+SortAuthors();
+//QueryAggregate();
+
 
 void QueryFilters()
 {
-    string name = "Josie";
-    List<Author> authors = _context.Authors.Where(s => s.FirstName == name).ToList();
+    //var name = "Josie";
+    //var authors=_context.Authors.Where(s=>s.FirstName==name).ToList();
+    var filter = "L%";
+    var authors = _context.Authors
+        .Where(a => EF.Functions.Like(a.LastName, filter)).ToList();
+}
+
+void QueryAggregate()
+{
+    var author = _context.Authors.OrderByDescending(a => a.FirstName)
+        .FirstOrDefault(a => a.LastName == "Lerman");
+}
+
+void SortAuthors()
+{
+    var authorsByLastName = _context.Authors
+        .OrderBy(a => a.LastName)
+        .ThenBy(a => a.FirstName).ToList();
+    authorsByLastName.ForEach(a => Console.WriteLine(a.LastName + "," + a.FirstName));
+
+    var authorsDescending = _context.Authors
+    .OrderByDescending(a => a.LastName)
+    .ThenByDescending(a => a.FirstName).ToList();
+    Console.WriteLine("**Descending Last and First**");
+    authorsDescending.ForEach(a => Console.WriteLine(a.LastName + "," + a.FirstName));
+    var lermans = _context.Authors.Where(a => a.LastName == "Lerman").OrderByDescending(a => a.FirstName).ToList();
+}
+
+void FindIt()
+{
+    var authorIdTwo = _context.Authors.Find(2);
+}
+
+void AddSomeMoreAuthors()
+{
+    _context.Authors.Add(new Author { FirstName = "Rhoda", LastName = "Lerman" });
+    _context.Authors.Add(new Author { FirstName = "Don", LastName = "Jones" });
+    _context.Authors.Add(new Author { FirstName = "Jim", LastName = "Christopher" });
+    _context.Authors.Add(new Author { FirstName = "Stephen", LastName = "Haunts" });
+    _context.SaveChanges();
 }
