@@ -3,7 +3,7 @@ using PublisherDomain;
 
 namespace PublisherData
 {
-    public class PubContext : DbContext
+    public class PubContext : DbContext 
     {
         public DbSet<Author> Authors { get; set; }
         public DbSet<Book> Books { get; set; }
@@ -11,9 +11,8 @@ namespace PublisherData
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(
-              "Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = PubDatabase"
+                "Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = PubDatabase"
             );
         }
-
     }
-}
+}  
