@@ -10,7 +10,7 @@ PubContext _context = new PubContext();
 //InsertAuthor();
 //RetrieveAndUpdateAuthor();
 //DeleteAnAuthor();
-RetrieveAndUpdateMultipleAuthors();
+//RetrieveAndUpdateMultipleAuthors();
 //CoordinatedRetrieveAndUpdateAuthor();
 //VariousOperations();
 //InsertMultipleAuthors();
@@ -30,7 +30,7 @@ void InsertMultipleAuthors()
 
 void DeleteAnAuthor()
 {
-    var extraJL = _context.Authors.Find(1);
+    var extraJL = _context.Authors.Find(10);
     if (extraJL != null)
     {
         _context.Authors.Remove(extraJL);

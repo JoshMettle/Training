@@ -8,11 +8,13 @@ using System.Linq;
 
 //QueryFilters();
 //FindIt();
-AddSomeMoreAuthors();
+//AddSomeMoreAuthors();
 //SkipAndTakeAuthors();
-SortAuthors();
 //QueryAggregate();
-
+//RetrieveAndUpdateAuthor();
+//RetrieveAndUpdateMultipleAuthors();
+VariousOperations();
+SortAuthors();
 
 void QueryFilters()
 {
@@ -55,5 +57,39 @@ void AddSomeMoreAuthors()
     _context.Authors.Add(new Author { FirstName = "Don", LastName = "Jones" });
     _context.Authors.Add(new Author { FirstName = "Jim", LastName = "Christopher" });
     _context.Authors.Add(new Author { FirstName = "Stephen", LastName = "Haunts" });
+    _context.SaveChanges();
+}
+
+void RetrieveAndUpdateAuthor()
+{
+    var author = _context.Authors.FirstOrDefault(a => a.FirstName == "Julie" && a.LastName == "Lerman");
+    if(author != null)
+    {
+        author.FirstName = "Julia";
+        _context.SaveChanges();
+    }
+}
+
+void RetrieveAndUpdateMultipleAuthors()
+{
+    var LermanAuthors = _context.Authors.Where(a => a.LastName == "Lehrman").ToList();
+    foreach (var la in LermanAuthors)
+    {
+        la.LastName = "Lerman";
+    }
+
+    Console.WriteLine("Before " + _context.ChangeTracker.DebugView.ShortView);
+    _context.ChangeTracker.DetectChanges();
+    Console.WriteLine("After " + _context.ChangeTracker.DebugView.ShortView);
+
+    _context.SaveChanges();
+}
+
+void VariousOperations()
+{
+    var author = _context.Authors.Find(2);
+    author.LastName = "Newfoundland";
+    var newauthor = new Author { LastName = "Appleman", FirstName = "Dan" };
+    _context.Authors.Add(newauthor);
     _context.SaveChanges();
 }
