@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PublisherData;
 
@@ -11,9 +12,10 @@ using PublisherData;
 namespace PublisherData.Migrations
 {
     [DbContext(typeof(PubContext))]
-    partial class PubContextModelSnapshot : ModelSnapshot
+    [Migration("20230307222550_fixerror")]
+    partial class fixerror
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,11 +26,11 @@ namespace PublisherData.Migrations
 
             modelBuilder.Entity("PublisherDomain.Author", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("AuthorId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuthorId"), 1L, 1);
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -38,44 +40,44 @@ namespace PublisherData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("AuthorId");
 
                     b.ToTable("Authors");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            AuthorId = 1,
                             FirstName = "Rhoda",
                             LastName = "Lerman"
                         },
                         new
                         {
-                            Id = 2,
+                            AuthorId = 2,
                             FirstName = "Ruth",
                             LastName = "Ozeki"
                         },
                         new
                         {
-                            Id = 3,
+                            AuthorId = 3,
                             FirstName = "Sofia",
                             LastName = "Segovia"
                         },
                         new
                         {
-                            Id = 4,
+                            AuthorId = 4,
                             FirstName = "Ursula K.",
                             LastName = "LeGuin"
                         },
                         new
                         {
-                            Id = 5,
+                            AuthorId = 5,
                             FirstName = "Hugh",
                             LastName = "Howey"
                         },
                         new
                         {
-                            Id = 6,
+                            AuthorId = 6,
                             FirstName = "Isabelle",
                             LastName = "Allende"
                         });

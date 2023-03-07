@@ -21,13 +21,13 @@ namespace PublisherData
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Author>().HasData(
-                new Author { AuthorId = 1, FirstName = "Rhoda", LastName = "Lerman" });
+                new Author { Id = 1, FirstName = "Rhoda", LastName = "Lerman" });
             var authorList = new Author[]{
-                new Author {AuthorId = 2, FirstName = "Ruth", LastName = "Ozeki" },
-                new Author {AuthorId = 3, FirstName = "Sofia", LastName = "Segovia" },
-                new Author {AuthorId = 4, FirstName = "Ursula K.", LastName = "LeGuin" },
-                new Author {AuthorId = 5, FirstName = "Hugh", LastName = "Howey" },
-                new Author {AuthorId = 6, FirstName = "Isabelle", LastName = "Allende" }
+                new Author {Id = 2, FirstName = "Ruth", LastName = "Ozeki" },
+                new Author {Id = 3, FirstName = "Sofia", LastName = "Segovia" },
+                new Author {Id = 4, FirstName = "Ursula K.", LastName = "LeGuin" },
+                new Author {Id = 5, FirstName = "Hugh", LastName = "Howey" },
+                new Author {Id = 6, FirstName = "Isabelle", LastName = "Allende" }
             };
             modelBuilder.Entity<Author>().HasData(authorList);
 
