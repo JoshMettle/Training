@@ -10,6 +10,7 @@ namespace PublisherData
         public DbSet<Book> Books { get; set; }
         public DbSet<Artist> Artists { get; set; }
         public DbSet<Cover> Covers { get; set; }
+        
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

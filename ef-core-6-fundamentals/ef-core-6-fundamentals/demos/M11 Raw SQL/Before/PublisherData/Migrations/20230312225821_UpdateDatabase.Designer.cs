@@ -12,17 +12,73 @@ using PublisherData;
 namespace PublisherData.Migrations
 {
     [DbContext(typeof(PubContext))]
-    [Migration("20220125144619_authoridchange")]
-    partial class authoridchange
+    [Migration("20230312225821_UpdateDatabase")]
+    partial class UpdateDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.1")
+                .HasAnnotation("ProductVersion", "6.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("ArtistCover", b =>
+                {
+                    b.Property<int>("ArtistsArtistId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CoversCoverId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ArtistsArtistId", "CoversCoverId");
+
+                    b.HasIndex("CoversCoverId");
+
+                    b.ToTable("ArtistCover");
+                });
+
+            modelBuilder.Entity("PublisherDomain.Artist", b =>
+                {
+                    b.Property<int>("ArtistId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ArtistId"), 1L, 1);
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ArtistId");
+
+                    b.ToTable("Artists");
+
+                    b.HasData(
+                        new
+                        {
+                            ArtistId = 1,
+                            FirstName = "Pablo",
+                            LastName = "Picasso"
+                        },
+                        new
+                        {
+                            ArtistId = 2,
+                            FirstName = "Dee",
+                            LastName = "Bell"
+                        },
+                        new
+                        {
+                            ArtistId = 3,
+                            FirstName = "Katharine",
+                            LastName = "Kuharic"
+                        });
+                });
 
             modelBuilder.Entity("PublisherDomain.Author", b =>
                 {
@@ -137,6 +193,70 @@ namespace PublisherData.Migrations
                         });
                 });
 
+            modelBuilder.Entity("PublisherDomain.Cover", b =>
+                {
+                    b.Property<int>("CoverId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CoverId"), 1L, 1);
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DesignIdeas")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("DigitalOnly")
+                        .HasColumnType("bit");
+
+                    b.HasKey("CoverId");
+
+                    b.HasIndex("BookId")
+                        .IsUnique();
+
+                    b.ToTable("Covers");
+
+                    b.HasData(
+                        new
+                        {
+                            CoverId = 1,
+                            BookId = 3,
+                            DesignIdeas = "How about a left hand in the dark?",
+                            DigitalOnly = false
+                        },
+                        new
+                        {
+                            CoverId = 2,
+                            BookId = 2,
+                            DesignIdeas = "Should we put a clock?",
+                            DigitalOnly = true
+                        },
+                        new
+                        {
+                            CoverId = 3,
+                            BookId = 1,
+                            DesignIdeas = "A big ear in the clouds?",
+                            DigitalOnly = false
+                        });
+                });
+
+            modelBuilder.Entity("ArtistCover", b =>
+                {
+                    b.HasOne("PublisherDomain.Artist", null)
+                        .WithMany()
+                        .HasForeignKey("ArtistsArtistId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PublisherDomain.Cover", null)
+                        .WithMany()
+                        .HasForeignKey("CoversCoverId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("PublisherDomain.Book", b =>
                 {
                     b.HasOne("PublisherDomain.Author", "Author")
@@ -148,9 +268,26 @@ namespace PublisherData.Migrations
                     b.Navigation("Author");
                 });
 
+            modelBuilder.Entity("PublisherDomain.Cover", b =>
+                {
+                    b.HasOne("PublisherDomain.Book", "Book")
+                        .WithOne("Cover")
+                        .HasForeignKey("PublisherDomain.Cover", "BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+                });
+
             modelBuilder.Entity("PublisherDomain.Author", b =>
                 {
                     b.Navigation("Books");
+                });
+
+            modelBuilder.Entity("PublisherDomain.Book", b =>
+                {
+                    b.Navigation("Cover")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
